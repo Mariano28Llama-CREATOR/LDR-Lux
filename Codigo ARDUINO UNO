@@ -1,0 +1,44 @@
+const int LEDPin = 13;
+const int LDRPin = A0;
+const int umbral = 2000;
+const int R1 = 613;
+
+void setup() 
+{
+  pinMode(LEDPin, OUTPUT);
+  pinMode(LDRPin, INPUT);
+  Serial.begin(9600);
+}
+
+void loop() 
+{
+  float Vanalogo;
+  float ConVolt;
+  float Lux;
+  float RL;
+  
+  Vanalogo = analogRead(LDRPin);
+  
+  ConVolt = ( ( Vanalogo*5 ) / 1023 );
+  
+  RL = (R1)*( (5 / ConVolt) -1 );
+  
+  Lux = pow( (RL/126951) , -1.1655 );
+  
+  if (Lux < umbral) 
+  {
+    digitalWrite(LEDPin, HIGH);
+  }
+  else 
+  {
+    digitalWrite(LEDPin, LOW);
+  }
+  Serial.print("El valor de RL es: ");
+  Serial.println(RL);
+  Serial.print("El valor de Vanalogico es: ");
+  Serial.println(ConVolt);
+  Serial.print("El valor de Lux es: ");
+  Serial.println(Lux);
+  Serial.println();
+  delay(2000);
+}
